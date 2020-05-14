@@ -28,6 +28,10 @@ const resolvers = {
     addChildrenToTicket: async (root, args, { datasource }) => {
       return await datasource.addChildrenToTicket(args);
     },
+
+    setParentOfTicket: async (root, args, { datasource }) => {
+      return await datasource.setParentOfTicket(args);
+    },
   },
 };
 

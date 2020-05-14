@@ -60,6 +60,25 @@ const ticketDatasource = {
 
     return models.Ticket.findByPk(parentId);
   },
+
+  // the ticket with id: childId gets the ticket with id: parentId as its new parent
+  // setParentOfTicket(parentId: ID!, childId: ID!): Ticket!
+
+  setParentOfTicket: async ({ parentId, childId }) => {
+    console.log({ parentId, childId });
+    await models.Ticket.update(
+      {
+        parentId,
+      },
+      {
+        where: {
+          id: childId,
+        },
+      }
+    );
+
+    return models.Ticket.findByPk(childId);
+  },
 };
 
 export default ticketDatasource;
