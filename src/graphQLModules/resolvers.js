@@ -25,6 +25,9 @@ const resolvers = {
     removeTicket: async (root, args, { datasource }) => {
       return await datasource.removeTicket(args);
     },
+    addChildrenToTicket: async (root, args, { datasource }) => {
+      return await datasource.addChildrenToTicket(args);
+    },
   },
 };
 

@@ -11,11 +11,7 @@ const ticketDatasource = {
   },
 
   findTicketById: async (id) => {
-    return models.Ticket.findOne({
-      where: {
-        id,
-      },
-    });
+    return models.Ticket.findByPk(id);
   },
 
   findChildrenTickets: async (parentIdList) => {
@@ -43,11 +39,26 @@ const ticketDatasource = {
   },
 
   removeTicket: async ({ id }) => {
-    console.log({ id });
     const findedTicket = await models.Ticket.findByPk(id);
     const isDeleted = !!findedTicket.destroy();
-    console.log({ findedTicket, isDeleted });
     return isDeleted;
+  },
+
+  addChildrenToTicket: async ({ parentId, childrenIds }) => {
+    const findedTicket = await models.Ticket.update(
+      {
+        parentId,
+      },
+      {
+        where: {
+          id: {
+            [Op.in]: childrenIds,
+          },
+        },
+      }
+    );
+
+    return models.Ticket.findByPk(parentId);
   },
 };
 
