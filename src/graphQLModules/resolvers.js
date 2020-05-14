@@ -22,6 +22,9 @@ const resolvers = {
     toggleTicket: async (root, args, { datasource }) => {
       return await datasource.toggleTicket(args);
     },
+    removeTicket: async (root, args, { datasource }) => {
+      return await datasource.removeTicket(args);
+    },
   },
 };
 

@@ -39,8 +39,15 @@ const ticketDatasource = {
 
   toggleTicket: async ({ id, isCompleted }) => {
     const findedTicket = await models.Ticket.findByPk(id);
-    console.log({ findedTicket });
     return findedTicket.update({ isCompleted });
+  },
+
+  removeTicket: async ({ id }) => {
+    console.log({ id });
+    const findedTicket = await models.Ticket.findByPk(id);
+    const isDeleted = !!findedTicket.destroy();
+    console.log({ findedTicket, isDeleted });
+    return isDeleted;
   },
 };
 
