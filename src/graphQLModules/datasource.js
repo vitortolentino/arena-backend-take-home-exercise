@@ -45,7 +45,7 @@ const ticketDatasource = {
   },
 
   addChildrenToTicket: async ({ parentId, childrenIds }) => {
-    const findedTicket = await models.Ticket.update(
+    await models.Ticket.update(
       {
         parentId,
       },
