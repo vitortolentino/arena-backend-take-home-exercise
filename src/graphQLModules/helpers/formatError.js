@@ -2,6 +2,7 @@ export default (err) => {
   const { extensions: { code } = {} } = err;
 
   if (process.env.NODE_ENV !== "production") {
+    console.log({ err });
     return err;
   }
 

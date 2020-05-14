@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
-import { UserInputError } from "apollo-server-express";
+import { UserInputError, ValidationError } from "apollo-server-express";
 import { models } from "./../db";
+import createTransaction from "./helpers/createTransaction";
 
 const ticketDatasource = {
   findParentTickets: async () => {
@@ -12,7 +13,12 @@ const ticketDatasource = {
   },
 
   findTicketById: async (id) => {
-    return models.Ticket.findByPk(id);
+    const findedTicket = await models.Ticket.findByPk(id);
+    if (!findedTicket) {
+      throw new UserInputError(`Ticket with id ${id} not found`);
+    }
+
+    return findedTicket;
   },
 
   findChildrenTickets: async (parentIdList) => {
@@ -48,13 +54,32 @@ const ticketDatasource = {
   },
 
   removeTicket: async ({ id }) => {
-    const findedTicket = await models.Ticket.findByPk(id);
-    if (!findedTicket) {
-      throw new UserInputError(`Ticket with id ${id} not found`);
-    }
+    const transaction = await createTransaction(models);
+    try {
+      const findedTicket = await models.Ticket.findByPk(id);
+      if (!findedTicket) {
+        throw new UserInputError(`Ticket with id ${id} not found`);
+      }
 
-    const isDeleted = !!findedTicket.destroy();
-    return isDeleted;
+      await models.Ticket.update(
+        {
+          parentId: null,
+        },
+        {
+          where: {
+            parentId: id,
+          },
+        }
+      );
+
+      const isDeleted = !!findedTicket.destroy();
+
+      await transaction.commit();
+      return isDeleted;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   },
 
   addChildrenToTicket: async ({ parentId, childrenIds }) => {
