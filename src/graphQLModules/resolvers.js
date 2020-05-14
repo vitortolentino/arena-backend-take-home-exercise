@@ -12,7 +12,13 @@ const resolvers = {
       return dataloaders.children.load(id);
     },
   },
-  Mutation: {},
+  Mutation: {
+    createTicket: async (root, args, { datasource }) => {
+      const a = await datasource.createTicket(args);
+      console.log({ a });
+      return a;
+    },
+  },
 };
 
 export default resolvers;

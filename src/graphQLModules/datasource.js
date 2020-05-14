@@ -27,6 +27,10 @@ const ticketDatasource = {
       },
     });
   },
+
+  createTicket: async ({ title, isCompleted = false }) => {
+    return models.Ticket.create({ title, isCompleted });
+  },
 };
 
 export default ticketDatasource;
