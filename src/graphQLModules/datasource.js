@@ -31,6 +31,11 @@ const ticketDatasource = {
   createTicket: async ({ title, isCompleted = false }) => {
     return models.Ticket.create({ title, isCompleted });
   },
+
+  updateTicket: async ({ id, title }) => {
+    const findedTicket = await models.Ticket.findByPk(id);
+    return findedTicket.update({ title });
+  },
 };
 
 export default ticketDatasource;

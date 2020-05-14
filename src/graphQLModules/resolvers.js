@@ -14,9 +14,10 @@ const resolvers = {
   },
   Mutation: {
     createTicket: async (root, args, { datasource }) => {
-      const a = await datasource.createTicket(args);
-      console.log({ a });
-      return a;
+      return await datasource.createTicket(args);
+    },
+    updateTicket: async (root, args, { datasource }) => {
+      return await datasource.updateTicket(args);
     },
   },
 };
