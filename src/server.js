@@ -4,6 +4,7 @@ import { ApolloServer } from "apollo-server-express";
 import datasource from "./graphQLModules/datasource";
 import dataloaders from "./graphQLModules/dataloaders";
 import { typeDefs, resolvers } from "./graphQLModules";
+import formatError from "./graphQLModules/helpers/formatError";
 
 const PORT = 4001;
 
@@ -16,6 +17,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context,
+  formatError,
 });
 
 const app = express();
