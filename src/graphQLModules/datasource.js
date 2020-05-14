@@ -61,9 +61,6 @@ const ticketDatasource = {
     return models.Ticket.findByPk(parentId);
   },
 
-  // the ticket with id: childId gets the ticket with id: parentId as its new parent
-  // setParentOfTicket(parentId: ID!, childId: ID!): Ticket!
-
   setParentOfTicket: async ({ parentId, childId }) => {
     console.log({ parentId, childId });
     await models.Ticket.update(
@@ -78,6 +75,21 @@ const ticketDatasource = {
     );
 
     return models.Ticket.findByPk(childId);
+  },
+
+  removeParentFromTicket: async ({ id }) => {
+    await models.Ticket.update(
+      {
+        parentId: null,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    return models.Ticket.findByPk(id);
   },
 };
 

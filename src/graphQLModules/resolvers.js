@@ -32,6 +32,10 @@ const resolvers = {
     setParentOfTicket: async (root, args, { datasource }) => {
       return await datasource.setParentOfTicket(args);
     },
+
+    removeParentFromTicket: async (root, args, { datasource }) => {
+      return await datasource.removeParentFromTicket(args);
+    },
   },
 };
 
